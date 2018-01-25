@@ -1,66 +1,37 @@
-# Multi-label-Inception-net
-Modified `retrain.py` script to allow multi-label image classification using pretrained [Inception net](https://github.com/tensorflow/models/tree/master/inception).
+### 要求
 
-The `label_image.py` has also been slightly modified to write out the resulting class percentages into `results.txt`. 
+[TensorFlow 1.1.0](https://github.com/tensorflow/tensorflow/releases/tag/v1.1.0) 
 
-Detailed explanation of all the changes and reasons behind them: 
-https://medium.com/@bartyrad/multi-label-image-classification-with-inception-net-cbb2ee538e30
+所有的图片需是 JPEG 格式.
 
-### Requirements
-[TensorFlow 0.12.0-rc1](https://github.com/tensorflow/tensorflow/releases/tag/0.12.0-rc1) - use branch `master`
+### 用途
+我们知道，inception训练的分类有1000种，本工程旨在inception v3的基础框架，在自己的数据
+集上训练数据，让其适用于具体的数据集，不同于迁移学习
 
-or
+#### 存放图片的目录
+1. 创建 `images` 目录，再创建子目录`multi-label`存放所有的图片，不要分类存放
 
-[TensorFlow 1.1.0](https://github.com/tensorflow/tensorflow/releases/tag/v1.1.0) - use branch `tensorflow_1.0` - thanks [moh3th1](https://github.com/moh3th1)
 
-All the training images must be in JPEG format.
+#### 数据准备工作
+1. 需要对每张`<image_file_name.jpg>` 文件生成 `<image_file_name.jpg>.txt`  
 
-### Usage
+   执行`getclass.sh`文件生成相应的txt文件。假设现在我有许多船的照片，
+   临时创建一个boat目录，存放所有的图片，将getclass.sh拷贝在boat下，执行
+   再将生成的图片txt拷贝到目录`image_labels_dir`，将所有的船图拷到`multi-label`下
 
-#### Update
-This version has been update to solve possible problems with calculating evaluation accuracies.
 
-Usage change: 
-Put all the training images in one folder and create a file `labels.txt` inside project root containing all the possible labels.
+2. 创建 `labels.txt` 输入具体的类别的名字，每个类别占一行. 
 
-#### Prepare training images
-1. Put all the training images into **one** folder inside `images` directory.
+#### 训练
+运行命令 `sh -x retrain.sh`.
 
-   The name of the folder does not matter. I use `multi-label`.
 
-#### Prepare labels for each training image
-1. We need to prepare files with correct labels for each image.
-   Name the files `<image_file_name.jpg>.txt` = if you have an image `car.jpg` the accompanying file will be `car.jpg.txt`. 
+#### 测试结果 
+Run: `python label_image.py <path/image_name>`
 
-   Put each true label on a new line inside the file, nothing else.
-
-   Now copy all the created files into the `image_labels_dir` directory located in project root.
-   You can change the path to this folder by editing global variable IMAGE_LABELS_DIR in `retrain.py`
-
-2. Create file `labels.txt` in project root and fill it with all the possible labels. 
-   Each label on a new line, nothing else.
-   Just like an `image_label` file for an image that is in all the possible classes.
-
-#### Retraining the model
-Simply run the appropriate command from `retrain.sh`.
-Feel free to play with the parameters.
-
-**Disclaimer**: If you try to retrain the model with just the single example image `car.jpg`, it is going to crash.
-Include at least 20 images in folder inside `images` directory.
-
-#### Testing resulting model
-Run: `python label_image.py <image_name>` from project root.
-
-#### Visualize training progress
-After the retraining is done you can view the logs by running:
+#### 训练的可视化
 
 `tensorboard --logdir retrain_logs`
 
-and navigating to http://127.0.0.1:6006/ in your browser.
+浏览器输入 http://127.0.0.1:6006/ 
 
-
-### Additional info
-If you want to try the original Inception net retraining, here is an excellent CodeLab: https://codelabs.developers.google.com/codelabs/tensorflow-for-poets
-
-#### License
-Apache License, Version 2.0
