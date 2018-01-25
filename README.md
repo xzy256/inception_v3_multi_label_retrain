@@ -1,3 +1,9 @@
+### 要求
+
+[TensorFlow 1.1.0](https://github.com/tensorflow/tensorflow/releases/tag/v1.1.0) 
+
+所有的图片需是 JPEG 格式.
+
 ### 文件说明
 `retrain.py`：重训练的代码
 `eval_retrain.sh`: 重训练执行脚本，里面含有参数
@@ -8,13 +14,6 @@
 `image_labels_dir`：放置所有的`img_filename.jpg.txt`
 `test.jpg`：测试图片
 `retrained_labels.txt`：数据集的种类名称，一行一个
-
-
-### 要求
-
-[TensorFlow 1.1.0](https://github.com/tensorflow/tensorflow/releases/tag/v1.1.0) 
-
-所有的图片需是 JPEG 格式.
 
 ### 用途
 我们知道，inception训练的分类有1000种，本工程旨在inception v3的基础框架，在自己的数据
